@@ -1,90 +1,92 @@
-# hw14-deep-learning
-# LSTM Stock Predictor
+# Results Analysis - LSTM Stock Predictor
 
 ![deep-learning.jpg](Images/deep-learning.jpg)
 
-Due to the volatility of cryptocurrency speculation, investors will often try to incorporate sentiment from social media and news articles to help guide their trading strategies. One such indicator is the [Crypto Fear and Greed Index (FNG)](https://alternative.me/crypto/fear-and-greed-index/) which attempts to use a variety of data sources to produce a daily FNG value for cryptocurrency. You have been asked to help build and evaluate deep learning models using both the FNG values and simple closing prices to determine if the FNG indicator provides a better signal for cryptocurrencies than the normal closing price data.
+ 
+- - -
 
-In this assignment, you will use deep learning recurrent neural networks to model bitcoin closing prices. One model will use the FNG indicators to predict the closing price while the second model will use a window of closing prices to predict the nth closing price.
+## Evaluate the performance of each model
 
-You will need to:
+### 1/ Parameters
++ window_size = 10
+- model: Sequential
+- number_units, neurons = 30                
+- dropout_fraction = 0.2
++ Layer 1
+    - model LSTM  
+    - model Dropout
++ Layer 2
+    - model LSTM  
+    - model Dropout
++ Layer 3
+    - model LSTM  
+    - model Dropout
++ Output layer
+    - model Dense
++ model.compile
+    -optimizer="adam"
+    -loss="mean_squared_error"  
 
-1. [Prepare the data for training and testing](#prepare-the-data-for-training-and-testing)
-2. [Build and train custom LSTM RNNs](#build-and-train-custom-lstm-rnns)
-3. [Evaluate the performance of each model](#evaluate-the-performance-of-each-model)
+### 2/ Based on these parameters - two models comparation 
+#### 2.1 Closing
+
+![closing_plot.png](./Images/closing_plot.png)
+
+#### 2.2 FNG
+
+![fgn.png](./Images/fgn_plot.png)
+
 
 - - -
 
-### Files
+### 3 Which model has a lower loss?
 
-[Closing Prices Starter Notebook](Starter_Code/lstm_stock_predictor_closing.ipynb)
+##### 3.1 Closing 
+5/5 [==============================] - 1s 4ms/step - loss: 0.0250
+0.02498834766447544
 
-[FNG Starter Notebook](Starter_Code/lstm_stock_predictor_fng.ipynb)
-
-- - -
-
-## Instructions
-
-### Prepare the data for training and testing
-
-Use the starter code as a guide to create a Jupyter Notebook for each RNN. The starter code contains a function to create the window of time for the data in each dataset.
-
-For the Fear and Greed model, you will use the FNG values to try and predict the closing price. A function is provided in the notebook to help with this.
-
-For the closing price model, you will use previous closing prices to try and predict the next closing price. A function is provided in the notebook to help with this.
-
-Each model will need to use 70% of the data for training and 30% of the data for testing.
-
-Apply a MinMaxScaler to the X and y values to scale the data for the model.
-
-Finally, reshape the X_train and X_test values to fit the model's requirement of samples, time steps, and features. (*example:* `X_train = X_train.reshape((X_train.shape[0], X_train.shape[1], 1))`)
-
-### Build and train custom LSTM RNNs
-
-In each Jupyter Notebook, create the same custom LSTM RNN architecture. In one notebook, you will fit the data using the FNG values. In the second notebook, you will fit the data using only closing prices.
-
-Use the same parameters and training steps for each model. This is necessary to compare each model accurately.
-
-### Evaluate the performance of each model
-
-Finally, use the testing data to evaluate each model and compare the performance.
-
-Use the above to answer the following:
-
-> Which model has a lower loss?
->
-> Which model tracks the actual values better over time?
->
-> Which window size works best for the model?
+##### 3.2 FNG
+5/5 [==============================] - 1s 4ms/step - loss: 0.1214
+0.12143657356500626
 
 - - -
 
-### Resources
+### 4 Which model tracks the actual values better over time?
 
-[Keras Sequential Model Guide](https://keras.io/getting-started/sequential-model-guide/)
+##### 4.1 Closing (this model tracks better actual values)
 
-[Illustrated Guide to LSTMs](https://towardsdatascience.com/illustrated-guide-to-lstms-and-gru-s-a-step-by-step-explanation-44e9eb85bf21)
+                Real	Predicted
+2019-02-20	3924.239990	3997.045166  
+2019-02-21	3974.050049	4068.318604  
+2019-02-22	3937.040039	4125.502441  
+2019-02-23	3983.530029	4148.861328  
+2019-02-24	4149.089844	4159.145020  
 
-[Stanford's RNN Cheatsheet](https://stanford.edu/~shervine/teaching/cs-230/cheatsheet-recurrent-neural-networks)
+##### 4.2 FNG
 
-- - -
-
-### Hints and Considerations
-
-Experiment with the model architecture and parameters to see which provides the best results, but be sure to use the same architecture and parameters when comparing each model.
-
-For training, use at least 10 estimators for both models.
-
-- - -
-
-### Submission
-
-* Create Jupyter Notebooks for the homework and host the notebooks on GitHub.
-
-* Include a Markdown that summarizes your homework and include this report in your GitHub repository.
-
-* Submit the link to your GitHub project to Bootcamp Spot.
+                Real	Predicted
+2019-02-20	3924.239990	4871.794922  
+2019-02-21	3974.050049	4939.271973  
+2019-02-22	3937.040039	4990.559570  
+2019-02-23	3983.530029	5031.798828  
+2019-02-24	4149.089844	5056.754395  
 
 - - -
 
-© 2019 Trilogy Education Services, a 2U, Inc. brand. All Rights Reserved.
+### 5 Which window size works best for the model?
+
+##### 5.1 Closing (Win = 15,  improves predictions, over 15 there is not much change)
+![closing_win15_plot.png](./Images/closing_win15_plot.png)
+
+
+##### 5.2 FNG (Win = 15, still low performance)
+![fng_win15_plot.png](./Images/fng_win15_plot.png)
+
+
+
+
+- - -
+
+
+
+
